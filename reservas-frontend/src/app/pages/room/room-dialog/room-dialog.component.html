@@ -1,0 +1,36 @@
+<mat-dialog-content>
+    <mat-toolbar><span>Room Info</span></mat-toolbar>
+
+    <div class="example-container">
+        <mat-form-field>
+            <input matInput placeholder="Number" [(ngModel)]="room.number" name="number" #number="ngModel" required type="number" min="0">
+            <mat-error class="invalid" *ngIf="number.touched ">Number is required and must be greater than 0</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Type" [(ngModel)]="room.type" name="type" required minlength="3" maxlength="20" #type="ngModel">
+            <mat-error class="invalid" *ngIf="type.touched && type.errors?.['required']">Type is required</mat-error>
+            <mat-error class="invalid" *ngIf="type.touched && type.errors?.['minlength']">Type must be at least 3 characters long</mat-error>
+            <mat-error class="invalid" *ngIf="type.touched && type.errors?.['maxlength']">Type cannot be more than 20 characters long</mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field>
+            <input matInput placeholder="Price" [(ngModel)]="room.price" name="price"  required type="number" min="1" #price="ngModel">
+            <mat-error class="invalid" *ngIf="price.touched && price.errors?.['required']">Price is required</mat-error>
+            <mat-error class="invalid" *ngIf="price.touched && price.errors?.['min']">Price must be greater than 0</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-select placeholder="Available" [(ngModel)]="room.available" name="available" required #available="ngModel">
+                <mat-option [value]="true">Yes</mat-option>
+                <mat-option [value]="false">No</mat-option>
+            </mat-select>
+            <mat-error class="invalid" *ngIf="available.touched && available.errors?.['required']">Available is required</mat-error>
+        </mat-form-field>
+
+        <button mat-button [disabled]="!room.number || !room.type || room.price == null || room.available == null"
+            (click)="operate()">Done</button>
+        <button mat-button color="warn" (click)="close()">Cancel</button>
+    </div>
+</mat-dialog-content>

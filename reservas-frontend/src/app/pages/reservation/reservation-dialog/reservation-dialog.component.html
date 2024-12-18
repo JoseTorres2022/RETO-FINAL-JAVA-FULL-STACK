@@ -1,0 +1,37 @@
+<mat-dialog-content>
+    <mat-toolbar><span>Reservation Info</span></mat-toolbar>
+
+    <div class="example-container"> 
+        
+        <mat-form-field >
+            <mat-label >Room</mat-label>
+            <mat-select  [(ngModel)]="reservation.idRoom"  name="idRoom"  required #idRoom="ngModel">
+                <mat-option *ngFor="let sp of rooms; let i = index" [value]="sp.id">{{ sp.number }}</mat-option>
+              </mat-select>
+            <mat-error class="invalid" *ngIf="idRoom.touched && idRoom.errors?.['required']">Room is required</mat-error>
+          </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Customer Name" [(ngModel)]="reservation.customerName" #curstomerName="ngModel" required>
+            <mat-error class="invalid" *ngIf="curstomerName.touched && curstomerName.errors?.['required']">Custor Name is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Select a Date Range:</mat-label>
+            <mat-date-range-input [rangePicker]="picker" [min]="minDate">
+                <input matStartDate  placeholder="Check In Date" [(ngModel)]="reservation.checkInDate" required #checkInDate="ngModel"> 
+                <input matEndDate placeholder="Check Out Date" [(ngModel)]="reservation.checkOutDate" required #checkOutDate="ngModel">
+            </mat-date-range-input>
+            <mat-hint>DD/MM/YYYY - DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+            <mat-error class="invalid" *ngIf="checkInDate.errors?.['required'] && checkOutDate.errors?.['required']">Both Check In and Check Out Dates are required</mat-error>
+            <mat-error class="invalid" *ngIf="checkInDate.errors?.['required'] && !checkOutDate.errors?.['required']">Check In Date is required</mat-error>
+            <mat-error class="invalid" *ngIf="checkOutDate.errors?.['required'] && !checkInDate.errors?.['required']">Check Out Date is required</mat-error>
+        </mat-form-field>
+
+        <button mat-button (click)="operate()"  [disabled]="!idRoom.valid || !curstomerName.valid || !checkInDate.valid || !checkOutDate.valid" >Done</button>
+        <button mat-button color="warn" (click)="close()">Cancel</button>
+    </div>
+
+</mat-dialog-content>
