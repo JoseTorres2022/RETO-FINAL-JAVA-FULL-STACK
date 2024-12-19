@@ -1,6 +1,7 @@
 package com.reservas.backend.service.impl;
 
 import com.reservas.backend.dto.request.ReservationRequestDto;
+import com.reservas.backend.dto.response.ReservationReponseDto;
 import com.reservas.backend.exception.BussinesException;
 import com.reservas.backend.exception.ModelNotFoundException;
 import com.reservas.backend.model.Reservation;
@@ -35,7 +36,7 @@ public class ReservationServiceImpl extends CRUDImpl<Reservation,Integer> implem
 
     @Transactional
     @Override
-    public Reservation saveReservation(ReservationRequestDto reservationRequestDto) {
+    public ReservationReponseDto saveReservation(ReservationRequestDto reservationRequestDto) {
         Room room = roomRepo.findById(reservationRequestDto.getIdRoom()).orElseThrow(
                 ()-> new ModelNotFoundException("ROOM WITH ID: " + reservationRequestDto.getIdRoom()+" NOT FOUND"));
 
@@ -49,10 +50,10 @@ public class ReservationServiceImpl extends CRUDImpl<Reservation,Integer> implem
         if (!conflictingReservations.isEmpty()) {
             throw new ServiceException("HABITACIÓN YA RESERVADA PARA LAS FECHAS INDICADAS");
         }
-
         Reservation reservation = mapperUtil.map(reservationRequestDto, Reservation.class);
         room.setAvailable(false);
+        reservation.setRoom(room);
         roomRepo.save(room);
-        return  repo.save(reservation);
+        return mapperUtil.map(repo.save(reservation), ReservationReponseDto.class);
     }
 }

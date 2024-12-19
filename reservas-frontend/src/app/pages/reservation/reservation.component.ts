@@ -15,7 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-reservation',
   standalone: true,
-  imports: [MaterialModule,DatePipe,FormsModule,ReactiveFormsModule],
+  imports: [MaterialModule, DatePipe, FormsModule, ReactiveFormsModule],
   templateUrl: './reservation.component.html',
   styleUrl: './reservation.component.css',
 })
@@ -27,8 +27,8 @@ export class ReservationComponent {
     { def: 'customerName', label: 'Custor Name', hide: false },
     { def: 'checkInDate', label: 'Checkin In Date', hide: false },
     { def: 'checkOutDate', label: 'Checkout Date', hide: false },
-    { def : 'roomNumber', label: 'Room Number', hide: false},
-    { def: 'actions', label: 'Actions', hide: false }
+    { def: 'roomNumber', label: 'Room Number', hide: false },
+    { def: 'actions', label: 'Actions', hide: false },
   ];
 
   @ViewChild(MatSort) sort: MatSort;
@@ -38,50 +38,62 @@ export class ReservationComponent {
     private reservationService: ReservationService,
     private _dialog: MatDialog,
     private _snackBar: MatSnackBar
-  ){}
+  ) {}
 
   ngOnInit(): void {
-    this.reservationService.findAll().subscribe(data => {
+    this.reservationService.findAll().subscribe((data) => {
       this.createTable(data);
     });
-    this.reservationService.getReservationChange().subscribe(data => {
+    this.reservationService.getReservationChange().subscribe((data) => {
       this.createTable(data);
     });
-    this.reservationService.getMessageChange().subscribe(data => {
+    this.reservationService.getMessageChange().subscribe((data) => {
       this._snackBar.open(data, 'INFO', {
-        duration: 2000
+        duration: 2000,
       });
     });
   }
 
-  createTable(data: Reservation[]){
-    console.log('data: ',data);
+  createTable(data: Reservation[]) {
+    console.log('data: ', data);
     this.dataSource = new MatTableDataSource(data);
     console.log('this.dataSource: ', this.dataSource.filteredData);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+    this.dataSource.filterPredicate = (data: Reservation, filter: string) => {
+      // Elimina espacios en blanco y convierte el filtro a minúsculas
+      const transformedFilter = filter.trim().toLowerCase();
+      
+      // Obtiene el número de habitación de la reserva y lo convierte a cadena
+      // Si no hay número de habitación, se asigna una cadena vacía
+      const roomNumber = data.room?.number?.toString() || '';
+      
+      // Verifica si el número de habitación contiene el filtro transformado
+      return roomNumber.includes(transformedFilter);
+    };
   }
 
   openDialog(reservation?: Reservation): void {
     console.log('reservation: ', reservation);
     this._dialog.open(ReservationDialogComponent, {
       width: '750px',
-      data: reservation
+      data: reservation,
     });
   }
 
   delete(id: number): void {
     this._dialog.open(ReservationDeleteDialogComponent, {
       width: '200px',
-      data: id
+      data: id,
     });
   }
 
-  getDisplayedColumns(){
-    return this.columnsDefinitions.filter(cd => !cd.hide).map(cd => cd.def);
+  getDisplayedColumns() {
+    return this.columnsDefinitions.filter((cd) => !cd.hide).map((cd) => cd.def);
   }
 
-  applyFilter(e: any){
+  applyFilter(e: any) {
+    console.log('e: ', e.target.value);
     this.dataSource.filter = e.target.value.trim();
   }
 
