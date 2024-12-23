@@ -5,7 +5,7 @@ import { RoomDialogComponent } from "./room/room-dialog/room-dialog.component";
 
 export const pagesRoutes: Routes = [
     { path: 'room', component: RoomComponent, children: [
-        { path: 'new', component: RoomDialogComponent},
+        // { path: 'new', component: RoomDialogComponent},
         // { path: 'edit/:id', component: PatientEditComponent}
     ]},    
     { path: 'reservation', component: ReservationComponent},

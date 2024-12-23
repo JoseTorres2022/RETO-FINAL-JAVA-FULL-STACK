@@ -60,17 +60,17 @@ export class ReservationComponent {
     console.log('this.dataSource: ', this.dataSource.filteredData);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    this.dataSource.filterPredicate = (data: Reservation, filter: string) => {
-      // Elimina espacios en blanco y convierte el filtro a minúsculas
-      const transformedFilter = filter.trim().toLowerCase();
+    // this.dataSource.filterPredicate = (data: Reservation, filter: string) => {
+    //   // Elimina espacios en blanco y convierte el filtro a minúsculas
+    //   const transformedFilter = filter.trim().toLowerCase();
       
-      // Obtiene el número de habitación de la reserva y lo convierte a cadena
-      // Si no hay número de habitación, se asigna una cadena vacía
-      const roomNumber = data.room?.number?.toString() || '';
+    //   // Obtiene el número de habitación de la reserva y lo convierte a cadena
+    //   // Si no hay número de habitación, se asigna una cadena vacía
+    //   const roomNumber = data.room?.number?.toString() || '';
       
-      // Verifica si el número de habitación contiene el filtro transformado
-      return roomNumber.includes(transformedFilter);
-    };
+    //   // Verifica si el número de habitación contiene el filtro transformado
+    //   return roomNumber.includes(transformedFilter);
+    // };
   }
 
   openDialog(reservation?: Reservation): void {

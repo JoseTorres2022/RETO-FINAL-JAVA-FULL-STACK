@@ -57,16 +57,16 @@ export class RoomComponent implements OnInit {
     this.dataSource = new MatTableDataSource(data);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    this.dataSource.filterPredicate = (data: Room, filter: string) => {
-      // Elimina espacios en blanco y convierte el filtro a minúsculas
-      const filterValue = filter.trim().toLowerCase();
+    // this.dataSource.filterPredicate = (data: Room, filter: string) => {
+    //   // Elimina espacios en blanco y convierte el filtro a minúsculas
+    //   const filterValue = filter.trim().toLowerCase();
     
-      // Convierte el valor de disponibilidad a texto ('yes' o 'no')
-      const availableText = data.available ? 'yes' : 'no';
+    //   // Convierte el valor de disponibilidad a texto ('yes' o 'no')
+    //   const availableText = data.available ? 'yes' : 'no';
     
-      // Verifica si el texto de disponibilidad contiene el valor del filtro
-      return availableText.includes(filterValue);
-    };
+    //   // Verifica si el texto de disponibilidad contiene el valor del filtro
+    //   return availableText.includes(filterValue);
+    // };
   }
 
   getDisplayedColumns() {
